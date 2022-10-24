@@ -1,4 +1,5 @@
 # NJU-doc
+
 NJU Software Engineering Document
 
 ## Overview
@@ -17,6 +18,11 @@ NJU Software Engineering Document
 10. 离散数学
 11. 人工智能发展与产业基础（公选课）
 12. 中国近代史纲要复习
+13. 大数据分析
+14. 云计算
+15. 自动化测试
+16. 计算机与操作系统
+17. 需求与商业模式创新
 
 当然，部分笔记可能是看了某些tutorial或者拓展学习的一些内容，可能和课程没有直接关系，大家作为参考即可。
 
