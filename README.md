@@ -36,3 +36,7 @@ NJU Software Engineering Document
 当然，部分笔记可能是看了某些tutorial或者拓展学习的一些内容，可能和课程没有直接关系，大家作为参考即可。
 
 feedback: 201250182@smail.nju.edu.cn
+
+## How To Contribute
+
+如果本仓库中有错误，可以发起 issue 和 PR 进行纠错
