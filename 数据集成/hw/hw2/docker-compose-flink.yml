@@ -1,0 +1,51 @@
+version: "3.7"
+
+networks:
+  flink_network:
+    external: true
+
+services:
+  jobmanager:
+    image: apache/flink:java11
+    hostname: jobmanager
+    ports:
+      - 10081:8081
+    command: jobmanager
+    networks:
+      - flink_network
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 2G
+      placement:
+        constraints: # 添加条件约束
+          - node.labels.hostname==master
+
+  taskmanager:
+    image: apache/flink:java11
+    hostname: taskmanager
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    networks:
+      - flink_network
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 2G
+      placement:
+        constraints: # 添加条件约束
+          - node.labels.hostname==worker-1

@@ -1,0 +1,160 @@
+version: "3.7"
+
+networks:
+  kafka_network:
+    external: true
+
+services:
+  kafka-zookeeper-1:
+    image: zookeeper:latest
+    hostname: kafka-zookeeper-1
+    ports:
+      - 2183:2181
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181 server.2=kafka-zookeeper-2:2888:3888;2181
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - /data/kafka/zookeeper/data:/data
+      - /data/kafka/zookeeper/datalog:/datalog
+      - /data/kafka/zookeeper/logs:/logs
+    networks:
+      - kafka_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: # 添加条件约束
+          - node.labels.hostname==master
+
+  kafka-zookeeper-2:
+    image: zookeeper:latest
+    hostname: kafka-zookeeper-2
+    ports:
+      - 2185:2181
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=kafka-zookeeper-1:2888:3888;2181 server.2=0.0.0.0:2888:3888;2181
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - /data/kafka/zookeeper/data:/data
+      - /data/kafka/zookeeper/datalog:/datalog
+      - /data/kafka/zookeeper/logs:/logs
+    networks:
+      - kafka_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: # 添加条件约束
+          - node.labels.hostname==worker-2
+
+  kafka-1:
+    image: wurstmeister/kafka:latest
+    hostname: kafka-1
+    ports:
+      - 9093:9093
+    depends_on:
+      - kafka-zookeeper-1
+      - kafka-zookeeper-2
+    environment:
+      HOSTNAME_COMMAND: "docker info -f '{{`{{.Swarm.NodeAddr}}`}}'"
+      KAFKA_BROKER_ID: 1
+      KAFKA_MESSAGE_MAX_BYTES: 5000000
+      KAFKA_ZOOKEEPER_CONNECT: kafka-zookeeper-1:2181,kafka-zookeeper-2:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT,SASL_PLAINTEXT:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://124.221.88.241:9093
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9093
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_LOG_DIRS: /kafka/kafka_log
+      KAFKA_LOG_CLEANUP_POLICY: "delete"
+      KAFKA_LOG_RETENTION_HOURS: 1
+      KAFKA_LOG_RETENTION_BYTES: 1048576
+      KAFKA_LOG_SEGMENT_BYTES: 1048576
+      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 300000
+      KAFKA_LOG_CLEANLE_ENABLE: "true"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "/data/kafka/kafka:/kafka"
+    networks:
+      - kafka_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 2G
+      placement:
+        constraints:
+          - node.labels.hostname==master
+
+  kafka-2:
+    image: wurstmeister/kafka:latest
+    hostname: kafka-2
+    ports:
+      - "9095:9095"
+    depends_on:
+      - kafka-zookeeper-1
+      - kafka-zookeeper-2
+    environment:
+      HOSTNAME_COMMAND: "docker info -f '{{`{{.Swarm.NodeAddr}}`}}'"
+      KAFKA_BROKER_ID: 2
+      KAFKA_MESSAGE_MAX_BYTES: 5000000
+      KAFKA_ZOOKEEPER_CONNECT: kafka-zookeeper-1:2181,kafka-zookeeper-2:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT,SASL_PLAINTEXT:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://150.158.53.187:9095
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9095
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_LOG_DIRS: /kafka/kafka_log
+      KAFKA_LOG_CLEANUP_POLICY: "delete"
+      KAFKA_LOG_RETENTION_HOURS: 1
+      KAFKA_LOG_RETENTION_BYTES: 1048576
+      KAFKA_LOG_SEGMENT_BYTES: 1048576
+      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 300000
+      KAFKA_LOG_CLEANLE_ENABLE: "true"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "/data/kafka/kafka:/kafka"
+    networks:
+      - kafka_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 2G
+      placement:
+        constraints:
+          - node.labels.hostname==worker-2
+  kafka-manager:
+    image: sheepkiller/kafka-manager:latest
+    hostname: kafka-manager
+    ports:
+      - "10010:9000"
+    depends_on:
+      - kafka-zookeeper-1
+      - kafka-zookeeper-2
+      - kafka-1
+      - kafka-2
+    environment:
+      ZK_HOSTS: kafka-zookeeper-1:2181,kafka-zookeeper-2:2181
+      TZ: CST-8
+    networks:
+      - kafka_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 2G
+      placement:
+        constraints:
+          - node.labels.hostname==master

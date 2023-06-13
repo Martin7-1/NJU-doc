@@ -1,0 +1,71 @@
+version: "2"
+
+services:
+  spark:
+    image: data/spark-hadoop:3
+    hostname: master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    volumes:
+      - /c/Users/70903/Study/NJUSE/2023_Spring/DataIntegration/share:/opt/share
+    ports:
+      - "8080:8080"
+      - "4040:4040"
+      - "8088:8088"
+      - "8042:8042"
+      - "9870:9870"
+      - "19888:19888"
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 4G
+  spark-worker-1:
+    image: data/spark-hadoop:3
+    hostname: worker1
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://master:7077
+      - SPARK_WORKER_MEMORY=4G
+      - SPARK_WORKER_CORES=2
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    volumes:
+      - /c/Users/70903/Study/NJUSE/2023_Spring/DataIntegration/share:/opt/share
+    ports:
+      - "8081:8081"
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 4G
+  spark-worker-2:
+    image: data/spark-hadoop:3
+    hostname: worker2
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://master:7077
+      - SPARK_WORKER_MEMORY=4G
+      - SPARK_WORKER_CORES=2
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    volumes:
+      - /c/Users/70903/Study/NJUSE/2023_Spring/DataIntegration/share:/opt/share
+    ports:
+      - "8082:8081"
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 4G

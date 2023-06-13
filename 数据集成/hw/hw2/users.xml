@@ -1,0 +1,57 @@
+<yandex>
+    <profiles>
+        <default>
+            <!-- 用于在单个服务器上运行查询的最大RAM -->
+            <max_memory_usage>3000000000</max_memory_usage>
+            <max_bytes_before_external_group_by>1500000000</max_bytes_before_external_group_by>
+            <!-- 使用未压缩数据块的缓存 -->
+            <use_uncompressed_cache>0</use_uncompressed_cache>
+            <!-- 分布式查询处理过程中选择副本的方式 -->
+            <!-- random   nearest_hostname:从错误最少的副本集合中选择    in_order:按照指定的顺序选择第一个活副本
+            first_or_random:如果第一个副本错误数较高，则从错误数最少的副本中随机选择一个副本  -->
+            <load_balancing>random</load_balancing>
+            <!-- 参数设置 -->
+            <input_format_import_nested_json>1</input_format_import_nested_json>
+            <allow_experimental_map_type>1</allow_experimental_map_type>
+        </default>
+        <readonly>
+            <max_memory_usage>3000000000</max_memory_usage>
+            <max_bytes_before_external_group_by>1500000000</max_bytes_before_external_group_by>
+            <use_uncompressed_cache>0</use_uncompressed_cache>
+            <load_balancing>random</load_balancing>
+            <readonly>1</readonly>
+        </readonly>
+    </profiles>
+    <!-- 跟踪每个小时的资源消耗，而不限制使用量 -->
+    <quotas>
+        <!-- Name of quota. -->
+        <default>
+            <interval>
+                <duration>3600</duration>
+                <queries>0</queries>
+                <errors>0</errors>
+                <result_rows>0</result_rows>
+                <read_rows>0</read_rows>
+                <execution_time>0</execution_time>
+            </interval>
+        </default>
+    </quotas>
+    <users>
+        <default>
+            <password_sha256_hex>03d174c046af7994b66172e5ac07956f911a1b0a80eab6fda92f209e89b78a0b</password_sha256_hex>
+            <networks incl="networks" replace="replace">
+                <ip>::/0</ip>
+            </networks>
+            <profile>default</profile>
+            <quota>default</quota>
+        </default>
+        <ck>
+            <password_sha256_hex>03d174c046af7994b66172e5ac07956f911a1b0a80eab6fda92f209e89b78a0b</password_sha256_hex>
+            <networks incl="networks" replace="replace">
+                <ip>::/0</ip>
+            </networks>
+            <profile>readonly</profile>
+            <quota>default</quota>
+        </ck>
+    </users>
+</yandex>

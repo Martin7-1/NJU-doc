@@ -1,0 +1,79 @@
+version: "3"
+
+services:
+  zookeeper:
+    image: zookeeper
+    ports:
+      - "2181:2181"
+      - "2182:2182"
+    volumes:
+      - "/data/clickhouse/zookeeper/data:/data"
+      - "/data/clickhouse/zookeeper/log:/datalog"
+    deploy:
+      placement:
+        constraints:
+          - node.labels.hostname==master
+  tabix:
+    image: spoonest/clickhouse-tabix-web-client
+    ports:
+      - "8080:80"
+    deploy:
+      placement:
+        constraints:
+          - node.labels.hostname==master
+  clickhouse01:
+    image: yandex/clickhouse-server
+    hostname: clickhouse01
+    user: root
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 3G
+      placement:
+        constraints:
+          - node.labels.hostname==worker-1
+    ports:
+      - "10000:9000"
+      - "8123:8123"
+    volumes:
+      - ~/clickhouse/config.xml:/etc/clickhouse-server/config.xml
+      - ~/clickhouse/metrika.xml:/etc/clickhouse-server/metrika.xml
+      - ~/clickhouse/users.xml:/etc/clickhouse-server/users.xml
+      - /data/clickhouse/clickhouse-server/data:/var/lib/clickhouse
+      - /data/clickhouse/clickhouse-server/log:/var/log/clickhouse-server/
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    depends_on:
+      - "zookeeper"
+  clickhouse02:
+    image: yandex/clickhouse-server
+    hostname: clickhouse02
+    user: root
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 3G
+      placement:
+        constraints:
+          - node.labels.hostname==worker-2
+    ports:
+      - "10001:9000"
+      - "8124:8123"
+    volumes:
+      - ~/clickhouse/config.xml:/etc/clickhouse-server/config.xml
+      - ~/clickhouse/metrika.xml:/etc/clickhouse-server/metrika.xml
+      - ~/clickhouse/users.xml:/etc/clickhouse-server/users.xml
+      - /data/clickhouse/clickhouse-server/data:/var/lib/clickhouse
+      - /data/clickhouse/clickhouse-server/log:/var/log/clickhouse-server/
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    depends_on:
+      - "zookeeper"
