@@ -1,0 +1,70 @@
+<!-- tag::allButValidation[] -->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Contacts</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+
+<body>
+
+<form method="POST" th:object="${contactInfo}">
+    <h3>Your contacts:</h3>
+    <ul>
+        <li th:each="contact : ${contactList}">
+            <span th:text="${contact.firstName}">first name: </span>
+            <span th:text="${contact.lastName}">last name: </span>
+            <span th:text="${contact.phone}">phone: </span>
+            <span th:text="${contact.email}">email: </span>
+        </li>
+    </ul>
+
+    <!-- end::allButValidation[] -->
+    <div th:if="${#fields.hasErrors()}">
+        <span class="validationError">
+        Please correct the problems below and resubmit.
+        </span>
+    </div>
+
+    <label for="firstName">first Name:</label>
+    <input type="text" th:field="*{firstName}"/>
+    <!-- end::allButValidation[] -->
+    <span class="validationError"
+          th:if="${#fields.hasErrors('firstName')}"
+          th:errors="*{firstName}">Zip Error</span>
+    <!-- tag::allButValidation[] -->
+    <br/>
+
+    <label for="lastName">last Name:</label>
+    <input type="text" th:field="*{lastName}"/>
+    <!-- end::allButValidation[] -->
+    <span class="validationError"
+          th:if="${#fields.hasErrors('lastName')}"
+          th:errors="*{lastName}">Zip Error</span>
+    <!-- tag::allButValidation[] -->
+    <br/>
+
+    <label for="phone">phone:</label>
+    <input type="text" th:field="*{phone}"/>
+    <!-- end::allButValidation[] -->
+    <span class="validationError"
+          th:if="${#fields.hasErrors('phone')}"
+          th:errors="*{phone}">Zip Error</span>
+    <!-- tag::allButValidation[] -->
+    <br/>
+
+    <label for="email">email:</label>
+    <input type="text" th:field="*{email}"/>
+    <!-- end::allButValidation[] -->
+    <span class="validationError"
+          th:if="${#fields.hasErrors('email')}"
+          th:errors="*{email}">Zip Error</span>
+    <!-- tag::allButValidation[] -->
+    <br/>
+
+    <input type="submit" value="Submit contact"/>
+</form>
+</body>
+</html>
+<!-- end::allButValidation[] -->
