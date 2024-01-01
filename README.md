@@ -1,6 +1,6 @@
 # NJU-doc
 
-NJU Software Engineering Document
+NJU Software Engineering Documents during 2020-2024.
 
 ## Overview
 
@@ -41,4 +41,11 @@ feedback: 201250182@smail.nju.edu.cn
 
 ## How To Contribute
 
-如果本仓库中有错误，可以发起 issue 和 PR 进行纠错
+如果本仓库中有错误，可以发起 issue 和 PR 进行纠错。
+
+1. fork this repo
+2. clone this repo: `git clone git@github.com:${username}/NJU-doc.git --depth 1`
+3. switch to a new branch: `git checkout -b ${new branch name}`
+4. do your contribution on new branch
+5. push to your own repo: `git add .` & `git commit` & `git push`
+6. create a new PR
