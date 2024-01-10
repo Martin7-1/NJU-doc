@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://archive.soa.software.nju.edu.cn/schema/"
+           xmlns:tns="http://archive.soa.software.nju.edu.cn/schema/">
+
+    <!-- 查询请求，查询自己的信息 -->
+    <xs:complexType name="QueryRequest">
+        <xs:sequence>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="password" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- 查询响应 -->
+    <xs:complexType name="QueryResponse">
+        <xs:sequence>
+            <xs:element name="code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="data" type="tns:StudentInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- 添加请求，只能够教师使用 -->
+    <xs:complexType name="AddRequest">
+        <xs:sequence>
+            <xs:element name="loginInfo" type="tns:LoginInfo"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="gender" type="tns:Gender"/>
+            <xs:element name="password" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- 添加响应 -->
+    <xs:complexType name="AddResponse">
+        <xs:sequence>
+            <xs:element name="code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="data" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- 更新请求 -->
+    <xs:complexType name="UpdateRequest">
+        <xs:sequence>
+            <xs:element name="loginInfo" type="tns:LoginInfo"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="gender" type="tns:Gender"/>
+            <xs:element name="password" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UpdateResponse">
+        <xs:sequence>
+            <xs:element name="code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="data" type="tns:StudentInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DeleteRequest">
+        <xs:sequence>
+            <xs:element name="loginInfo" type="tns:LoginInfo"/>
+            <xs:element name="id" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DeleteResponse">
+        <xs:sequence>
+            <xs:element name="code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="data" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="StudentInfo">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="gender" type="tns:Gender"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LoginInfo">
+        <xs:sequence>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="password" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="Gender">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="male"/>
+            <xs:enumeration value="female"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

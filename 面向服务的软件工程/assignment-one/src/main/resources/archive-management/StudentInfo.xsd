@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:am="archive-management"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="archive-management">
+
+    <xs:simpleType name="gender" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="male"/>
+            <xs:enumeration value="man"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="studentInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="age" type="xs:int"/>
+            <xs:element name="gender" type="am:gender"/>
+            <xs:element name="major" type="xs:string"/>
+            <xs:element name="enrollYear" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="studentInfo" type="am:studentInfo"/>
+</xs:schema>

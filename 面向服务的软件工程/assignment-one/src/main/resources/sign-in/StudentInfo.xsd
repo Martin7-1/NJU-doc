@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:si="sign-in"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="sign-in">
+
+    <xs:complexType name="studentInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="className" type="xs:string"/>
+            <xs:element name="signInTime" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="student" type="si:studentInfo"/>
+</xs:schema>

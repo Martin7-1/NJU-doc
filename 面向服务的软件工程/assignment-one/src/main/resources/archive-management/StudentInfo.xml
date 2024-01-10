@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<am:studentInfo xmlns:am="archive-management">
+    <id>201250001</id>
+    <name>Bond</name>
+    <age>35</age>
+    <gender>man</gender>
+    <major>Computer Science</major>
+    <enrollYear>2020</enrollYear>
+</am:studentInfo>

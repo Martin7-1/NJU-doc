@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:ea="educational-admin"
+           xmlns:am="archive-management"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="educational-admin">
+
+    <xs:import namespace="archive-management" schemaLocation="../archive-management/StudentInfo.xsd"/>
+    <xs:include schemaLocation="CourseInfo.xsd"/>
+    <xs:include schemaLocation="Grade.xsd"/>
+
+    <xs:element name="courseGradeList">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="courseGrade" type="ea:courseGrade" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="courseGrade">
+        <xs:sequence>
+            <xs:element name="courseInfo" type="ea:courseInfo"/>
+            <xs:element name="courseGrades" type="ea:courseStudentGrade"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="courseStudentGrade">
+        <xs:sequence>
+            <xs:element name="studentInfo" type="am:studentInfo"/>
+            <xs:element name="grade" type="ea:grade" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

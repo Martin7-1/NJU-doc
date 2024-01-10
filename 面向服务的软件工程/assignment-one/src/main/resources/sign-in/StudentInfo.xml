@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<si:student xmlns:si="sign-in"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="StudentInfo.xsd">
+    <id>201250001</id>
+    <name>Bond</name>
+    <className>Machine Learning</className>
+    <signInTime>2023-11-14T13:58:00</signInTime>
+</si:student>

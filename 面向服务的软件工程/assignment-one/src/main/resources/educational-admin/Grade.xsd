@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="educational-admin">
+    <xs:complexType name="grade">
+        <xs:sequence>
+            <xs:element name="usualGrade" type="xs:decimal"/>
+            <xs:element name="finalGrade" type="xs:decimal"/>
+            <xs:element name="totalGrade" type="xs:decimal"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

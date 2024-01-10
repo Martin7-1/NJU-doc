@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<definitions
+        xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:tns="http://signin.soa.software.nju.edu.cn/"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:ns1="http://signin.soa.software.nju.edu.cn/schema/"
+        targetNamespace="http://signin.soa.software.nju.edu.cn/"
+        name="SigninService">
+
+    <types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://signin.soa.software.nju.edu.cn/schema/" schemaLocation="SigninService.xsd"/>
+        </xs:schema>
+    </types>
+
+    <message name="signin">
+        <part name="parameters" type="ns1:SigninRequest"/>
+    </message>
+
+    <message name="signinResponse">
+        <part name="parameters" type="ns1:SigninResponse"/>
+    </message>
+
+    <portType name="SigninService">
+        <operation name="signin">
+            <input wsam:Action="http://signin.soa.software.nju.edu.cn/SigninService/signinRequest" message="tns:signin"/>
+            <output wsam:Action="http://signin.soa.software.nju.edu.cn/SigninService/signinResponse" message="tns:signinResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="SigninServicePortBinding" type="tns:SigninService">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="signin">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="SigninService">
+        <port name="SigninServicePort" binding="tns:SigninServicePortBinding">
+            <soap:address location="http://localhost:8081/signin"/>
+        </port>
+    </service>
+
+</definitions>

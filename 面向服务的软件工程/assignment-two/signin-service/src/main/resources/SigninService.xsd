@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://signin.soa.software.nju.edu.cn/schema/"
+        xmlns:tns="http://signin.soa.software.nju.edu.cn/schema/">
+
+    <!-- 签到请求，包括学生邮箱和学生的密码 以及 签到码 -->
+    <xs:complexType name="SigninRequest">
+        <xs:sequence>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="password" type="xs:string"/>
+            <xs:element name="signinCode" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- 签到响应，包括响应码，响应信息和签到状态 -->
+    <xs:complexType name="SigninResponse">
+        <xs:sequence>
+            <xs:element name="code" type="xs:integer"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="status" type="tns:Status" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="Status">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="onTime"/>
+            <xs:enumeration value="late"/>
+            <xs:enumeration value="absent"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
